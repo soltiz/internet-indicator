@@ -8,6 +8,8 @@ export DISPLAY=:0
 export XAUTHORITY=/home/cedric/.Xauthority
 export LOGFILE=/tmp/networkManager.log
 
+touch ${LOGFILE}
+chmod ugo+rw ${LOGFILE}
 
 function log () {
 	echo "$@" >> ${LOGFILE}
@@ -15,7 +17,7 @@ function log () {
 
 
 function fatal () {
-	log "FATAL ERROR - $@"
+	log "FATAL ERROR - $@" >> ${LOGFILE}
 	notify-send -u CRITICAL "$@"
 	exit 1
 }
@@ -120,7 +122,7 @@ if ! [ -z "$proxy" ] ; then
 fi
 
 
-log "reloading proxy..."
+log "reloading proxy at $(date)..."
 service squid reload ; sleep 2
 
 #log -n "HTTPS check : "
